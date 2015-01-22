@@ -1,0 +1,69 @@
+package effulgence;
+
+// Represents an entry in the TOC (excluding links to threads).
+message Chapter {
+  optional string title = 1; // Title as in the TOC, e.g. "he couldn't have
+                             // imagined".
+  optional string by_user = 4; // Dreamwidth user name, e.g. "edgeofyourseat".
+  optional string main_threaded_url = 2; // The link from the TOC points here,
+                                         // to the threaded page.
+  optional string first_flat_page_url = 3; // Will be used to determine the
+                                           // number of flat pages.
+  optional string local_file_path = 5; // This should be easy to deduct from the url
+                                // but is nevertheless here so that we can
+                                // process this thing using ugly scripts.
+  optional string symbols = 6; // E.g. Stella's star, Golden's... emm... little
+                               // sun? etc.
+
+  // The following fields will only be filled out in the second pass, after
+  // having downloaded both the first flat page and the threaded original.
+
+  // The intro text, from the top of comment pages.
+  optional string intro = 9;
+
+  // The number of pages the flat version has. Calculated after looking at the
+  // first flat page.
+  optional int32 num_pages = 8;
+
+  // All the URLs for the flat pages.
+  repeated string flat_url = 10;
+
+  // We are making the assumption that threads start at top-level comments and
+  // go on linearly from there. At some point we intend to put in an assertion
+  // for this.
+  repeated LinearCommentThread thread = 7;
+
+  // The file name where we'll store all the comments for this chapter (it's per
+  // chapter, not in one single large file).
+  optional string full_chapter_file_name = 11;
+}
+
+// A thread. Most of the chapters have only one. It'll end up being one unit of
+// linear stuff e.g. in an e-book format.
+message LinearCommentThread {
+  repeated Comment comment = 1;
+}
+
+// One unit of thing.
+message Comment {
+  // The Dreamwidth user the comment is by.
+  optional string by_user = 1;
+  // Full URL for the icon pic.
+  optional string icon_url = 2;
+  // Text associated with the icon (from the mouseover).
+  optional string icon_text = 3;
+  // Timestamp, as it is on the site. (... UTC, apparently.)
+  optional string timestamp = 4;
+  // The ID of the comment. It's "cmt" plus these (typically six) digits; let's
+  // hope it's unique around the site.
+  optional int32 cmt_id = 5;
+  // // The parent of the comment.
+  // Not that we actually need this because everything is linear anyway?
+  // optional int32 parent_cmt_id = 6;
+  optional string text = 6;
+}
+
+// One such PB will be generated from the TOC.
+message Chapters {
+  repeated Chapter chapter = 1;
+}

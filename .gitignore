@@ -1,0 +1,9 @@
+*.epub
+*.mobi
+*.ipynb
+*.org
+ebooklib
+*.pyc
+*_pb2.*
+test
+samples
