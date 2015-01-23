@@ -5,16 +5,19 @@
     <title>@!chapter.title!@</title>
   </head>
   <body>
-    <h4>@!chapter.title!@</h4>
-    <i>@!chapter.by_user!@</i> <br/>
-    <div id="the-intro">
+    <header>
+      <h1>@!chapter.title!@</h1>
+      <i>@!chapter.by_user!@</i>
+    </header>
+    <section id="the-intro">
       $!chapter.intro!$
-    </div>
+    </section>
     <!--(for thread in chapter.thread)-->
+      <section class="thread" id="thread@!thread.comment[0].cmt_id!@">
       <!--(for comment in thread.comment)-->
-        <div class="comment @!comment.moiety!@">
-          <a name="@! "cmt%d" % comment.cmt_id!@"></a>
-          <div class="comment-header-box">
+        <section class="comment @!comment.moiety!@" id="cmt@!comment.cmt_id!@">
+          <header class="comment-header-box">
+            <!-- TODO: Avoid using tables for alignment -->
             <table border=0> <tr> <td>
                   <img class="comment-image" src="@!comment.icon_image_name!@" />
                 </td><td>
@@ -22,11 +25,9 @@
                     <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
                   </div>
             </td></tr></table>
-          </div>
-          <div class="comment-content">
-            $!comment.text!$
-          </div>
-        </div>
+          </header>
+          $!comment.text!$
+        </section>
       <!--(end)-->
       <hr />
     <!--(end)-->
