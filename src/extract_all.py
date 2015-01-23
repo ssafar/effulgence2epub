@@ -35,9 +35,12 @@ filled in."""
     c.moiety = user_to_moiety_dict.get(c.by_user, "")
 
     img_tag = c_div.find("div", class_="userpic").find("img")
-    c.icon_url = img_tag["src"]
-    c.icon_text = img_tag["alt"]
-    c.icon_image_name = common.img_url_to_internal(c.icon_url)
+
+    # Apparently, not all comments have images.
+    if img_tag:
+        c.icon_url = img_tag["src"]
+        c.icon_text = img_tag["alt"]
+        c.icon_image_name = common.img_url_to_internal(c.icon_url)
 
     c.timestamp = c_div.find("span", class_="datetime").text.strip()
     c.cmt_id = int(re.match(r"comment-cmt([0-9]+)", c_div["id"]).groups()[0])

@@ -13,7 +13,8 @@ cd `dirname $0`
 case $1 in
     "") cat <<EOF
 Please choose between the following operations: toc_download, toc_parse,
-firstflat_download, firstflat_parse, all_flat_download, images_get, gen_ebook.
+firstflat_download, firstflat_parse, all_flat_download, all_flat_parse, 
+images_get, toc_xhtmlize, gen_ebook, gen_html.
 
 (Typically, this is a reasonable ordering for downloading everything.)
 EOF
@@ -67,7 +68,7 @@ EOF
         # at 'chapter {'), and applies extract_all.py on all the chapters
         # independently.
         cat global_lists/chapters_with_intros.pbtxt | \
-            parallel -N1 --pipe --recstart 'chapter {' python src/extract_all.py 
+            parallel --gnu -N1 --pipe --recstart 'chapter {' python src/extract_all.py 
         # We need -N1, otherwise the split wouldn't be potentially happening at
         # every line.
         ;;
@@ -125,7 +126,7 @@ EOF
         # Copy them to place. (--xapply takes arguments in pairs from the two
         # files; cp -u only updates the target if the original is newer, saving
         # a bit of actual copying.)
-        parallel -j 1 --xapply \
+        parallel --gnu -j 1 --xapply \
             -a global_lists/local_image_cache_files.txt \
             -a global_lists/local_image_files.txt \
             cp -u
@@ -138,7 +139,7 @@ EOF
 
     gen_html)
         cat global_lists/chapters_with_intros.pbtxt | \
-            parallel -N1 --pipe --recstart 'chapter {' python src/gen_html.py 
+            parallel --gnu -N1 --pipe --recstart 'chapter {' python src/gen_html.py 
         ;;
 
     *) echo "Unknown stage; sorry."
