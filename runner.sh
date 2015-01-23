@@ -88,7 +88,51 @@ EOF
         # Do the thing with a smaller list of chapters. It's faster. By the way,
         # this is an ugly hardcoded length but it's likely to stay the
         # same. (It's the first two chapters.)
-        cat global_lists/chapters_with_intros.pbtxt | head -n 22 | python src/gen_epub.py
+        cat global_lists/chapters_with_intros.pbtxt | head -n 22 | \
+            python src/gen_epub.py
+        ;;
+
+    collect_html_supplementary_files)
+        # We copy all the images to the HTML mirror dir. They all have URLs like
+        # http://www.dreamwidth.org/userpic/6302160/2035002 in the chapters; we
+        # also have a field "icon_image_name" for every comment, with an image
+        # filename that looks less weird. So we collect a list of both of them
+        # (there are around 2200 images), make them look like local file names
+        # and give them to *parallel*, which in turn pairs them up and does the
+        # copying.
+
+        cp src/html_style.css html_mirror
+        
+        cat chapters_pbtxt/*.pbtxt | grep icon_url | cut -d\" -f 2 | # URLs.
+            sort -u | # Unique URLs.
+            sed -e 's|http://|web_cache/|' \
+                >global_lists/local_image_cache_files.txt
+
+        mkdir -p html_mirror/imgs
+
+        cat chapters_pbtxt/*.pbtxt | \
+            grep icon_image_name | cut -d\" -f 2 | # Target file names.
+            sort -u |
+            sed -e 's|^|html_mirror/imgs/|' >global_lists/local_image_files.txt
+            # (Also prepend the appropriate path.)
+
+        # Copy them to place. (--xapply takes arguments in pairs from the two
+        # files; cp -u only updates the target if the original is newer, saving
+        # a bit of actual copying.)
+        parallel -j 1 --xapply \
+            -a global_lists/local_image_cache_files.txt \
+            -a global_lists/local_image_files.txt \
+            cp -u
+        ;;
+        
+    gen_html_test)
+        cat global_lists/chapters_with_intros.pbtxt | head -n 22 | \
+            python src/gen_html.py
+        ;;
+
+    gen_html)
+        cat global_lists/chapters_with_intros.pbtxt | \
+            parallel -N1 --pipe --recstart 'chapter {' python src/gen_html.py 
         ;;
 
     *) echo "Unknown stage; sorry."
