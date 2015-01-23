@@ -29,6 +29,8 @@ style = pkg_resources.resource_string(__name__, "style.css")
 def map_external_imgs(book, chapter, the_map):
     for thread in chapter.thread:
         for comment in thread.comment:
+            if not comment.HasField("icon_url"):
+                continue
             img_file_name = comment.icon_url.replace("http://", "web_cache/")
             if img_file_name not in the_map:
                 internal_url = common.img_url_to_internal(comment.icon_url)
