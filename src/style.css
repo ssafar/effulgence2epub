@@ -2,3 +2,5 @@
   .comment-image { align: left; margin-right: 0.5em; }
   .comment-header-info {  }
   .comment { margin-top: 0.5em; }
+  .thread + .thread:before { content: "<hr />" }
+  

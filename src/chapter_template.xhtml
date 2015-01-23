@@ -5,35 +5,44 @@
     <title>@!chapter.title!@</title>
   </head>
   <body>
-     <h4>@!chapter.title!@</h4>
-     <i>@!chapter.by_user!@</i> <br/>
-     <div id="the-intro">
-       $!chapter.intro!$
-     </div>
+    <header>
+      <h1>@!chapter.title!@</h1>
+      <i>@!chapter.by_user!@</i>
+    </header>
+    <section id="the-intro">
+      $!chapter.intro!$
+    </section>
     <!--(for thread in chapter.thread)-->
-     <!--(for comment in thread.comment)-->
-     <div class="comment @!comment.moiety!@">
-       <a name="@! "cmt%d" % comment.cmt_id!@"></a>
-       <div class="comment-header-box">
-         <table border=0> <tr> <td>
-               <!--(if comment.HasField("icon_image_name"))-->
-               <img class="comment-image" src="@!comment.icon_image_name!@" />
-               <!--(else)-->
-               #! This is a blank image to fill up space.
-               <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="100" height="100" alt="" />
-               <!--(end)-->
-             </td><td>
-               <div class="comment-header-info">
-                 <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
-               </div>
-         </td></tr></table>
-       </div>
-       <div class="comment-content">
-         $!comment.text!$
-       </div>
-     </div>
-     <!--(end)-->
-     <hr />
+      <section class="thread" id="thread@!thread.comment[0].cmt_id!@">
+      <!--(for comment in thread.comment)-->
+        <section class="comment @!comment.moiety!@" id="cmt@!comment.cmt_id!@">
+          <header class="comment-header-box">
+            <!-- TODO: Avoid using tables for alignment -->
+            <table border=0> <tr> <td>
+                  <!--(if comment.HasField("icon_image_name"))-->
+                    <img class="comment-image"
+                         src="@!comment.icon_image_name!@"
+                         alt="Profile image: @!comment.icon_text!@"
+                         title="@!comment.icon_text!@"
+                         />
+                  <!--(else)-->
+                    <img class="comment-image"
+                         src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                         width="100" height="100"
+                         alt="(no profile image)"
+                         title="(no profile image)"
+                         />
+                  <!--(end)-->
+                </td><td>
+                  <div class="comment-header-info">
+                    <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
+                  </div>
+            </td></tr></table>
+          </header>
+          $!comment.text!$
+        </section>
+      <!--(end)-->
+      <hr />
     <!--(end)-->
   </body>
 </html>
