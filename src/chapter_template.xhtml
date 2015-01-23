@@ -5,30 +5,30 @@
     <title>@!chapter.title!@</title>
   </head>
   <body>
-     <h4>@!chapter.title!@</h4>
-     <i>@!chapter.by_user!@</i> <br/>
-     <div id="the-intro">
-       $!chapter.intro!$
-     </div>
+    <h4>@!chapter.title!@</h4>
+    <i>@!chapter.by_user!@</i> <br/>
+    <div id="the-intro">
+      $!chapter.intro!$
+    </div>
     <!--(for thread in chapter.thread)-->
-     <!--(for comment in thread.comment)-->
-     <div class="comment @!comment.moiety!@">
-       <a name="@! "cmt%d" % comment.cmt_id!@"></a>
-       <div class="comment-header-box">
-         <table border=0> <tr> <td>
-               <img class="comment-image" src="@!comment.icon_image_name!@" />
-             </td><td>
-               <div class="comment-header-info">
-                 <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
-               </div>
-         </td></tr></table>
-       </div>
-       <div class="comment-content">
-         $!comment.text!$
-       </div>
-     </div>
-     <!--(end)-->
-     <hr />
+      <!--(for comment in thread.comment)-->
+        <div class="comment @!comment.moiety!@">
+          <a name="@! "cmt%d" % comment.cmt_id!@"></a>
+          <div class="comment-header-box">
+            <table border=0> <tr> <td>
+                  <img class="comment-image" src="@!comment.icon_image_name!@" />
+                </td><td>
+                  <div class="comment-header-info">
+                    <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
+                  </div>
+            </td></tr></table>
+          </div>
+          <div class="comment-content">
+            $!comment.text!$
+          </div>
+        </div>
+      <!--(end)-->
+      <hr />
     <!--(end)-->
   </body>
 </html>
