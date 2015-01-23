@@ -25,6 +25,7 @@ def process_chapter(chapter):
             soup = BeautifulSoup(f)
             
             extract_comment_soup(soup, chapter, parent_threads)
+
             
 def extract_comment(c_div):
     """Given a comment div element obj, returns a Comment proto, with the values
@@ -35,6 +36,7 @@ filled in."""
     img_tag = c_div.find("div", class_="userpic").find("img")
     c.icon_url = img_tag["src"]
     c.icon_text = img_tag["alt"]
+    c.icon_image_name = common.img_url_to_internal(c.icon_url)
 
     c.timestamp = c_div.find("span", class_="datetime").text.strip()
     c.cmt_id = int(re.match(r"comment-cmt([0-9]+)", c_div["id"]).groups()[0])

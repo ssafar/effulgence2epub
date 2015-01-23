@@ -41,8 +41,18 @@ EOF
             wget -i ../global_lists/first_flat_list.txt --no-clobber -w $WAIT_TIME \
             --force-directories)
         ;;
-
+    
     firstflat_parse)
+        cat global_lists/chapters.pbtxt | python src/extract_firstflat_info.py
+        ;;
+
+    all_flat_download)
+        (cd web_cache; \
+            wget -i ../global_lists/all_chapters_list.txt --no-clobber \
+            -w $WAIT_TIME --force-directories)
+        ;;
+
+    all_flat_parse)
         # Here we use GNU Parallel to launch the processing nicely. We could
         # pipe the entire thing to the parser instead but it wouldn't be as fast
         # / cool.
@@ -56,11 +66,6 @@ EOF
         # every line.
         ;;
 
-    all_flat_download)
-        (cd web_cache; \
-            wget -i ../global_lists/all_the_image_urls.txt --no-clobber \
-            -w $WAIT_TIME --force-directories)
-        ;;
 
     images_get)
         # Extract all the icon URLs from the chapters. We get the relevant

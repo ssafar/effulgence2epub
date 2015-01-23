@@ -33,7 +33,7 @@ if __name__== "__main__":
     all_the_flat_chapters = []
 
     for chapter in chapters.chapter:
-        the_file_name = chapter.first_flat_page_url.replace("http://", "")
+        the_file_name = chapter.first_flat_page_url.replace("http://", "web_cache/")
 
         # Infer the eventual full chapter file name. (Could be done in the first
         # stage, too.)
@@ -55,8 +55,8 @@ if __name__== "__main__":
         all_the_flat_chapters.extend(chapter.flat_url)
 
 
-    with open("chapters_with_intros.pbtxt", mode="w") as f:
+    with open("global_lists/chapters_with_intros.pbtxt", mode="w") as f:
         f.write(str(chapters))
 
-    with open("all_chapters_list.txt", mode="w") as f:
+    with open("global_lists/all_chapters_list.txt", mode="w") as f:
         f.write("\n".join(all_the_flat_chapters))

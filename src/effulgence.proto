@@ -52,6 +52,9 @@ message Comment {
   optional string icon_url = 2;
   // Text associated with the icon (from the mouseover).
   optional string icon_text = 3;
+  // Local image name for the icon. Will be used internally by all the mirrors /
+  // ebooks.
+  optional string icon_image_name = 7;
   // Timestamp, as it is on the site. (... UTC, apparently.)
   optional string timestamp = 4;
   // The ID of the comment. It's "cmt" plus these (typically six) digits; let's

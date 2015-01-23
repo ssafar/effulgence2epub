@@ -4,6 +4,7 @@ import effulgence_pb2 as eproto
 
 import google.protobuf
 import re
+import os
 
 def get_chapters_from_stdin():
     chapters = eproto.Chapters()
@@ -35,3 +36,24 @@ def parse_dreamwidth_url(url):
     return result
     
     
+def full_chapter_from_introonly(introonly_chapter):
+    """Given a chapter proto (without the comments), we load the full chapter."""
+    chapter = eproto.Chapter()
+
+
+    with open(os.path.join("chapters_pbtxt", 
+                           introonly_chapter.full_chapter_file_name)) as f:
+        google.protobuf.text_format.Merge(f.read(), chapter)
+
+    return chapter
+
+
+def chapter_to_internal_name(chapter):
+    """Returns an epub-internal chapter name."""
+    return chapter.full_chapter_file_name.replace("pbtxt", "xhtml")
+
+
+def img_url_to_internal(url):
+    """Will generate comment.icon_image_name."""
+    r = re.match(r"http://www.dreamwidth.org/userpic/([0-9]*)/([0-9]*)", url)
+    return "img_%s_%s.jpg" % r.groups()

@@ -5,7 +5,7 @@ About Effulgence2Epub
 
 Anyway. This is a Thing that downloads it from dreamwidth.org (all of it!), and generates a nice ebook out of it. It's not the only Thing with the first property (I'm thinking of [effulgence-mirror](https://github.com/liammdalton/effulgence-mirror)), but most likely the only one (so far) with the second. It generates .epub files, which can then easily be converted to e.g. Kindle formats. (More on the exact meaning of "easily" coming up later.)
 
-Since the actual ebooks are accessible (here?) (TODO put up link), if you'd only like to read Effulgence itself, just downloading those is your best bet. If you're interested in how to create ebooks or download lots of pages or something similar, read on.
+Since the actual ebooks are up already ([epub](http://luminous.elcenia.com/effulgence/effulgence.epub) and [mobi](http://luminous.elcenia.com/effulgence/effulgence.mobi)), if you'd only like to read Effulgence itself, just downloading those is your best bet. If you're interested in how to create ebooks or download lots of pages or something similar, read on.
 
 Requirements
 ============
@@ -15,6 +15,7 @@ The code has been observed to work on a specific instance of Ubuntu 14.04. It us
   - [Google Protocol Buffers](https://code.google.com/p/protobuf/) to store the parsed data from the chapters. This also means that if you'd like to convert Effulgence into some other format, this project might have solved the "input" part for you. (apt-get install protobuf-compiler)
   - [EbookLib](https://github.com/aerkalov/ebooklib) to generate the EPUB file. (no Ubuntu package here; just clone their repo into the root of this one. Ping me if you have better ideas :))
   - [GNU Parallel](http://www.gnu.org/software/parallel/), to process chapters faster on multicore machines. It feels like xargs but it's more flexible and has parallelization awesomeness. Highly recommended for e.g. batch resizing images, too. (apt-get install parallel)
+  - [pyratemp](http://www.simple-is-better.org/template/pyratemp.html), for templating. So that we can have for loops in html pages.
 
 
 How it works
@@ -31,6 +32,7 @@ This is reflected in the several distinct stages you can launch by running runne
   - we use wget to download the first pages of the chapters. We only get the files that don't exist locally, so relaunching this process continues where it left off. (firstflat_download)
   - we parse all of these. This produces an extended chapter list, complete with intros and all the flat chapter URLs. (firstflat_parse)
   - this time, we download everything. (all\_flat\_download)
+  - and parse those too. (all\_flat\_parse)
   - also, the images. (images_get)
   - we convert the TOC to its ebook variant (toc_xhtmlize)
   - and finally, we create the epub file itself (gen_ebook).
