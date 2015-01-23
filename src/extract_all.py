@@ -32,6 +32,7 @@ def extract_comment(c_div):
 filled in."""
     c = eproto.Comment()
     c.by_user = c_div.find(True, class_="poster").find("b").text
+    c.moiety = user_to_moiety_dict.get(c.by_user, "")
 
     img_tag = c_div.find("div", class_="userpic").find("img")
     c.icon_url = img_tag["src"]
@@ -67,13 +68,14 @@ def extract_comment_soup(soup, chapter, parent_threads):
         parent_threads[comment.cmt_id] = our_linear_comment_thread            
         our_linear_comment_thread.comment.extend([comment])
 
-        
 
 chapters = common.get_chapters_from_stdin()
+
+# Mapping usernames to authors.
+user_to_moiety_dict = common.load_profile_data()
 
 for chapter in chapters.chapter:
     process_chapter(chapter)
     with open(os.path.join("chapters_pbtxt", 
                            chapter.full_chapter_file_name), mode="w") as f:
         f.write(str(chapter))
-

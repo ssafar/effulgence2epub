@@ -21,13 +21,19 @@ EOF
         ;;
 
     toc_download)
+        # Downloads the TOC for Effulgence, Incandescence & the sandboxes. Plus
+        # user lists for the main authors.
+        
         (cd web_cache; \
             wget --force-directories \
-            http://edgeofyourseat.dreamwidth.org/2121.html)
+            -i ../starter_html_set.txt)
         ;;
 
     toc_parse)
         python src/chapter_list.py
+        # And while we're at it, parse profile pages, too.
+        cat starter_html_set.txt | tail -n 3 | python src/parse_profiles.py \
+            >global_lists/profiles.pbtxt
         ;;
 
     toc_xhtmlize)

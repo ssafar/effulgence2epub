@@ -63,10 +63,23 @@ message Comment {
   // // The parent of the comment.
   // Not that we actually need this because everything is linear anyway?
   // optional int32 parent_cmt_id = 6;
+  // The text of the comment, with HTML in it.
   optional string text = 6;
+  // The actual author ('s profile name).
+  optional string moiety = 8;
 }
 
 // One such PB will be generated from the TOC.
 message Chapters {
   repeated Chapter chapter = 1;
+}
+
+// To store the parsed profile info.
+message Profile {
+  optional string name = 1;
+  repeated string user = 2;
+}
+
+message Profiles {
+  repeated Profile profile = 1;
 }

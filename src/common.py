@@ -11,6 +11,17 @@ def get_chapters_from_stdin():
     google.protobuf.text_format.Merge(sys.stdin.read(), chapters)
     return chapters
 
+        
+def load_profile_data():
+    profiles = eproto.Profiles()
+    with open("global_lists/profiles.pbtxt") as f:
+        google.protobuf.text_format.Merge(f.read(), profiles)
+    user_to_moiety_dict = {}
+    for profile in profiles.profile:
+        for user in profile.user:
+            user_to_moiety_dict[user] = profile.name
+    return user_to_moiety_dict
+
 
 # def get_some_chapters():
 #     chapters = eproto.Chapters()
