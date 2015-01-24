@@ -18,7 +18,7 @@
         <section class="comment @!comment.moiety!@" id="cmt@!comment.cmt_id!@">
           <header class="comment-header-box">
             <!-- TODO: Avoid using tables for alignment -->
-            <table border=0> <tr> <td>
+            <table role="presentation"> <tr> <td>
                   <!--(if comment.HasField("icon_image_name"))-->
                     <img class="comment-image"
                          src="@!comment.icon_image_name!@"
@@ -42,7 +42,7 @@
           $!comment.text!$
         </section>
       <!--(end)-->
-      <hr />
+      </section>
     <!--(end)-->
   </body>
 </html>
