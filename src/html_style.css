@@ -1,4 +1,65 @@
-  .comment {  }
-  .comment-image { align: left; margin-right: 0.5em; }
-  .comment-header-info {  }
-  .comment { margin-top: 0.5em; }
+body {
+    font-family: Verdana, Helvetica, ARial, sans-serif;
+    font-size: 0.75em;
+    line-height: 1.5;
+}
+
+#content { 
+    padding: 0 5%;
+}
+
+.comment-header-info {
+    display:  table-cell;
+    padding-top:  0px;
+    vertical-align: middle;
+}
+
+.comment-image { 
+    align: left; 
+    margin-right: 0.5em;
+    display:  table-cell;
+}
+
+.comment-by-user { 
+    font-weight: bold;
+}
+
+.comment { 
+    margin-top: 0.8em;
+}
+
+.comment-header-box {
+    display:  table;
+    width: 100%;
+    background-color: #aaaaaa;
+    border-bottom: 1px solid red;
+    border-right: 1px solid red;
+}
+
+/* Moieties. */
+.belltower .comment-header-box {
+    background-color: #aaccaa;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+}
+
+.binary_heat .comment-header-box {
+    background-color: #ccaacc;
+    border-bottom: 1px solid #ff9999;
+    border-right: 1px solid #ff9999;
+}
+
+.aestrices .comment-header-box {
+    background-color: #aaaacc;
+    border-bottom: 1px solid #ff9999;
+    border-right: 1px solid #ff9999;
+}
+
+.comment-content {
+    margin-top: 0.3em; 
+}
+
+.chapter-by-user {
+    font-style: italic;
+}
+
