@@ -5,7 +5,7 @@
       <i>This is a branching point; there are @!len(chapter.thread)!@ continuations from here.</i>
     </p>
   <!--(end)-->
-  <!--(for num, thread in enumerate(chapter.thread))-->
+  <!--(for num, thread in enumerate(threads))-->
     <!--(if num != 0)--><hr /><!--(end)-->
     <section class="thread" id="thread@!thread.comment[0].cmt_id!@">
       <header>
@@ -43,6 +43,7 @@
           $!comment.text!$
         </section> <!-- cmt@!comment.cmt_id!@ -->
       <!--(end)-->
+      @!THREADS(threads = thread.children, parent = "#%d" % thread.comment[-1].cmt_id)!@
     </section> <!-- thread@!thread.comment[0].cmt_id!@ -->
   <!--(end)-->
 <!--(end)-->
