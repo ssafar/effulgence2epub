@@ -1,22 +1,26 @@
-<!--(macro THREAD)-->
-  #! THREAD(num, parentId, comments) !#
-  <!--(if num != 0)--><hr /><!--(end)-->
-  <section class="thread" id="thread@!comments[0].cmt_id!@">
-    <header>
-      #! TODO: Allow macro caller to give a title !#
-      #! (e.g., “give it a shot”, “Adarin in summoning circle”) !#
-      <!--(if num != 0)-->
-        <p>
-          <i>This is continuation number @!num + 1!@ from
-          <a href="#@!parentId!@">here</a>.</i>
-        </p>
-      <!--(end)-->
-    </header>
-    <!--(for comment in comments)-->
-      <section class="comment @!comment.moiety!@" id="cmt@!comment.cmt_id!@">
-        <header class="comment-header-box">
-          <!-- TODO: Avoid using tables for alignment -->
-          <table role="presentation"> <tr> <td>
+<!--(macro THREADS)-->
+  #! THREADS(threads, parent) !#
+  <!--(if len(chapter.thread) > 1)-->
+    <p>
+      <i>This is a branching point; there are @!len(chapter.thread)!@ continuations from here.</i>
+    </p>
+  <!--(end)-->
+  <!--(for num, thread in enumerate(chapter.thread))-->
+    <!--(if num != 0)--><hr /><!--(end)-->
+    <section class="thread" id="thread@!thread.comment[0].cmt_id!@">
+      <header>
+        <!--(if num != 0)-->
+          <p>
+            <i>This is continuation number @!num + 1!@ from
+            <a href="@!parent!@">here</a>.</i>
+          </p>
+        <!--(end)-->
+      </header>
+      <!--(for comment in thread.comment)-->
+        <section class="comment @!comment.moiety!@" id="cmt@!comment.cmt_id!@">
+          <header class="comment-header-box">
+            <!-- TODO: Avoid using tables for alignment -->
+            <table role="presentation"> <tr> <td>
                 <!--(if comment.HasField("icon_image_name"))-->
                   <img class="comment-image"
                        src="@!comment.icon_image_name!@"
@@ -32,16 +36,15 @@
                        title="(no profile image)"
                        />
                 <!--(end)-->
-              </td><td>
-                <div class="comment-header-info">
-                  <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
-                </div>
-          </td></tr></table>
-        </header>
-        $!comment.text!$
-      </section>
-    <!--(end)-->
-  </section>
+              </td><td class="comment-header-info">
+                <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
+            </td></tr></table>
+          </header>
+          $!comment.text!$
+        </section> <!-- cmt@!comment.cmt_id!@ -->
+      <!--(end)-->
+    </section> <!-- thread@!thread.comment[0].cmt_id!@ -->
+  <!--(end)-->
 <!--(end)-->
 
 <?xml version='1.0'?>
@@ -58,13 +61,6 @@
     <section id="the-intro">
       $!chapter.intro!$
     </section>
-    <!--(if len(chapter.thread) > 1)-->
-      <p>
-        <i>This is a branching point; there are @!len(chapter.thread)!@ continuations from here.</i>
-      </p>
-    <!--(end)-->
-    <!--(for num, thread in enumerate(chapter.thread))-->
-      @!THREAD(num = num, parentId = "", comments = thread.comment)!@
-    <!--(end)-->
+    @!THREADS(threads = chapter.thread, parent = "#")!@
   </body>
 </html>
