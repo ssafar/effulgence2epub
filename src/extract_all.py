@@ -62,15 +62,45 @@ def extract_comment_soup(soup, chapter, parent_threads):
             # http://self-composed.dreamwidth.org/10014.html?thread=2066206&style=site#cmt2066206
             parent_id = int(re.search(r"cmt([0-9]+)$", parent_link_href).groups()[0])
             if parent_id in parent_threads:
-                our_linear_comment_thread = parent_threads[parent_id]
-            else:
+                parent_thread = parent_threads[parent_id]
+                if parent_thread.comment[-1].cmt_id != parent_id:
+                    # We need to start a new thread and move the old successor
+                    # comments of parent to a new, different thread.
+                    branch_thread(parent_thread, parent_id)
+                
+                # At this point, the parent is the last comment of parent_thread.
+                if parent_thread.children:
+                    our_linear_comment_thread = parent_thread.children.add()
+                else:
+                    our_linear_comment_thread = parent_thread
+            else: # Parent ID earlier in this chapter
                 raise "Reference to unknown parent %d" % parent_id
-        else:
+        else: # No parent link
             our_linear_comment_thread = chapter.thread.add()
 
         parent_threads[comment.cmt_id] = our_linear_comment_thread            
         our_linear_comment_thread.comment.extend([comment])
 
+def branch_thread(thread, from_id):
+    # Get the index of the branch point
+    indexes = [i for i, cmt in enumerate(thread.comment) if cmt.cmt_id == from_id]
+    assert len(indexes) == 1 # Must split from a comment in the thread
+    index = indexes[0]
+    
+    # Get details for new thread
+    after_index = thread.comment[index + 1:]
+    children = thread.children[:]
+    
+    # Clean up old thread
+    del thread.comment[index + 1:]
+    del thread.children[:]
+    
+    # Add new child thread
+    child = thread.children.add()
+    child.comment.extend(after_index)
+    child.children.extend(thread.children)
+    
+    return child
 
 chapters = common.get_chapters_from_stdin()
 
