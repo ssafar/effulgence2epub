@@ -49,8 +49,10 @@ if __name__ == "__main__":
     book.set_identifier("effulgence_mirror")
     book.set_title("Effulgence")
     book.set_language("en")
-    book.add_author("Alicorn")
-    book.add_author("Kappa")
+    
+    # Each author needs a UID, or ebooklib gives them the same one.
+    book.add_author("Alicorn", uid="belltower")
+    book.add_author("Kappa", uid="binary-heat")
 
     all_chapters = []
 
@@ -62,7 +64,7 @@ if __name__ == "__main__":
 
     # Add Table of Contents.
     toc_epub = epub.EpubHtml(title="Table of Contents",
-                             file_name="nav.xhtml")
+                             file_name="toc.xhtml")
 
     with open("global_lists/toc.xhtml") as f:
         toc_epub.set_content(f.read())
@@ -70,6 +72,9 @@ if __name__ == "__main__":
     toc_epub.add_item(css)
     book.add_item(toc_epub)
     book.spine = [toc_epub]
+    
+    # Also get EPUB TOC.
+    book.toc = [toc_epub]
 
     for introonly_chapter in chapters.chapter:
 
@@ -90,10 +95,11 @@ if __name__ == "__main__":
         chapter_epub.add_item(css)
         book.add_item(chapter_epub)
         book.spine.append(chapter_epub)
+        book.toc.append(chapter_epub)
 
         all_chapters.append(chapter_epub)
 
     book.add_item(epub.EpubNcx())
-    # book.add_item(epub.EpubNav())
+    book.add_item(epub.EpubNav())
 
     epub.write_epub("effulgence.epub", book, {})
