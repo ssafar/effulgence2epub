@@ -1,3 +1,53 @@
+<!--(macro THREADS)-->
+  #! THREADS(threads, parent) !#
+  <!--(if len(chapter.thread) > 1)-->
+    <p>
+      <i>This is a branching point; there are @!len(chapter.thread)!@ continuations from here.</i>
+    </p>
+  <!--(end)-->
+  <!--(for num, thread in enumerate(threads))-->
+    <!--(if num != 0)--><hr /><!--(end)-->
+    <section class="thread" id="thread@!thread.comment[0].cmt_id!@">
+      <header>
+        <!--(if num != 0)-->
+          <p>
+            <i>This is continuation number @!num + 1!@ from
+            <a href="@!parent!@">here</a>.</i>
+          </p>
+        <!--(end)-->
+      </header>
+      <!--(for comment in thread.comment)-->
+        <section class="comment @!comment.moiety!@" id="cmt@!comment.cmt_id!@">
+          <header class="comment-header-box">
+            <!-- TODO: Avoid using tables for alignment -->
+            <table role="presentation"> <tr> <td>
+                <!--(if comment.HasField("icon_image_name"))-->
+                  <img class="comment-image"
+                       src="@!comment.icon_image_name!@"
+                       width="100" height="100"
+                       alt="Profile image: @!comment.icon_text!@"
+                       title="@!comment.icon_text!@"
+                       />
+                <!--(else)-->
+                  <img class="comment-image"
+                       src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                       width="100" height="100"
+                       alt="(no profile image)"
+                       title="(no profile image)"
+                       />
+                <!--(end)-->
+              </td><td class="comment-header-info">
+                <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
+            </td></tr></table>
+          </header>
+          $!comment.text!$
+        </section> <!-- cmt@!comment.cmt_id!@ -->
+      <!--(end)-->
+      @!THREADS(threads = thread.children, parent = "#%d" % thread.comment[-1].cmt_id)!@
+    </section> <!-- thread@!thread.comment[0].cmt_id!@ -->
+  <!--(end)-->
+<!--(end)-->
+
 <?xml version='1.0'?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" epub:prefix="z3998: http://www.daisy.org/z3998/2012/vocab/structure/#" lang="en" xml:lang="en">
@@ -12,37 +62,6 @@
     <section id="the-intro">
       $!chapter.intro!$
     </section>
-    <!--(for thread in chapter.thread)-->
-      <section class="thread" id="thread@!thread.comment[0].cmt_id!@">
-      <!--(for comment in thread.comment)-->
-        <section class="comment @!comment.moiety!@" id="cmt@!comment.cmt_id!@">
-          <header class="comment-header-box">
-            <!-- TODO: Avoid using tables for alignment -->
-            <table role="presentation"> <tr> <td>
-                  <!--(if comment.HasField("icon_image_name"))-->
-                    <img class="comment-image"
-                         src="@!comment.icon_image_name!@"
-                         alt="Profile image: @!comment.icon_text!@"
-                         title="@!comment.icon_text!@"
-                         />
-                  <!--(else)-->
-                    <img class="comment-image"
-                         src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-                         width="100" height="100"
-                         alt="(no profile image)"
-                         title="(no profile image)"
-                         />
-                  <!--(end)-->
-                </td><td>
-                  <div class="comment-header-info">
-                    <b> @!comment.by_user!@ </b> <br/> @!comment.timestamp!@
-                  </div>
-            </td></tr></table>
-          </header>
-          $!comment.text!$
-        </section>
-      <!--(end)-->
-      </section>
-    <!--(end)-->
+    @!THREADS(threads = chapter.thread, parent = "#")!@
   </body>
 </html>

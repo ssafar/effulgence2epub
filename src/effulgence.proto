@@ -28,9 +28,8 @@ message Chapter {
   // All the URLs for the flat pages.
   repeated string flat_url = 10;
 
-  // We are making the assumption that threads start at top-level comments and
-  // go on linearly from there. At some point we intend to put in an assertion
-  // for this.
+  // If any thread splits other than at the top level (a comment with multiple
+  // children), then those will be recorded as children of these threads.
   repeated LinearCommentThread thread = 7;
 
   // The file name where we'll store all the comments for this chapter (it's per
@@ -42,6 +41,7 @@ message Chapter {
 // linear stuff e.g. in an e-book format.
 message LinearCommentThread {
   repeated Comment comment = 1;
+  repeated LinearCommentThread children = 2;
 }
 
 // One unit of thing.
