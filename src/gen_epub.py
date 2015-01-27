@@ -72,6 +72,9 @@ if __name__ == "__main__":
     toc_epub.add_item(css)
     book.add_item(toc_epub)
     book.spine = [toc_epub]
+    
+    # Also get EPUB TOC.
+    book.toc = [toc_epub]
 
     for introonly_chapter in chapters.chapter:
 
@@ -92,6 +95,7 @@ if __name__ == "__main__":
         chapter_epub.add_item(css)
         book.add_item(chapter_epub)
         book.spine.append(chapter_epub)
+        book.toc.append(chapter_epub)
 
         all_chapters.append(chapter_epub)
 
