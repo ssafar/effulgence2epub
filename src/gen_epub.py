@@ -49,8 +49,10 @@ if __name__ == "__main__":
     book.set_identifier("effulgence_mirror")
     book.set_title("Effulgence")
     book.set_language("en")
-    book.add_author("Alicorn")
-    book.add_author("Kappa")
+    
+    # Each author needs a UID, or ebooklib gives them the same one.
+    book.add_author("Alicorn", uid="belltower")
+    book.add_author("Kappa", uid="binary-heat")
 
     all_chapters = []
 
