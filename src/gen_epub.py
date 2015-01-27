@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     # Add Table of Contents.
     toc_epub = epub.EpubHtml(title="Table of Contents",
-                             file_name="nav.xhtml")
+                             file_name="toc.xhtml")
 
     with open("global_lists/toc.xhtml") as f:
         toc_epub.set_content(f.read())
@@ -100,6 +100,6 @@ if __name__ == "__main__":
         all_chapters.append(chapter_epub)
 
     book.add_item(epub.EpubNcx())
-    # book.add_item(epub.EpubNav())
+    book.add_item(epub.EpubNav())
 
     epub.write_epub("effulgence.epub", book, {})
