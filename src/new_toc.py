@@ -25,7 +25,7 @@ if __name__== "__main__":
     the_toc_html = soup.select(".entry-content")[0]
 
     # Remove the "how to read" link.
-    the_toc_html.find_all("a")[0].extract()
+    the_toc_html.find_all("center")[0].extract()
 
     # As for the others, parse them & replace them with the appropriate internal
     # links.
