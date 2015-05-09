@@ -1,3 +1,5 @@
+Update 05/09/2015: The new main repo for the project is [@dhouck](https://github.com/dhouck)'s [here](https://github.com/dhouck/effulgence2epub), with quite an amount of new fixes & features; you might want to have a look at that one instead. (Thanks to @dhouck btw!)
+
 About Effulgence2Epub
 =====================
 
